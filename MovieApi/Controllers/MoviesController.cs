@@ -12,14 +12,14 @@ public class MoviesController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Movie
+    // GET: api/Movies
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
     {
         return await _context.Movies.ToListAsync();
     }
 
-    // GET: api/Movie/5
+    // GET: api/Movies/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Movie>> GetMovie(int id)
     {
@@ -33,7 +33,7 @@ public class MoviesController : ControllerBase
         return movie;
     }
 
-    // PUT: api/Movie/5
+    // PUT: api/Movies/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutMovie(int? id, Movie movie)
@@ -64,7 +64,7 @@ public class MoviesController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Movie
+    // POST: api/Movies
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Movie>> PostMovie(Movie movie)
@@ -75,7 +75,7 @@ public class MoviesController : ControllerBase
         return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
     }
 
-    // DELETE: api/Movie/5
+    // DELETE: api/Movies/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMovie(int? id)
     {

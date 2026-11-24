@@ -46,6 +46,52 @@ namespace MovieApi.Migrations
 
                     b.ToTable("Movies");
                 });
+
+            modelBuilder.Entity("MovieApi.Models.MovieDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Synopsis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("budget")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId")
+                        .IsUnique();
+
+                    b.ToTable("MovieDetails");
+                });
+
+            modelBuilder.Entity("MovieApi.Models.MovieDetails", b =>
+                {
+                    b.HasOne("MovieApi.Models.Movie", "Movie")
+                        .WithOne("MovieDetails")
+                        .HasForeignKey("MovieApi.Models.MovieDetails", "MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieApi.Models.Movie", b =>
+                {
+                    b.Navigation("MovieDetails");
+                });
 #pragma warning restore 612, 618
         }
     }

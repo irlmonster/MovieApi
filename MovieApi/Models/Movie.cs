@@ -16,5 +16,26 @@ namespace MovieApi.Models
 
         [Required]
         public string Genre { get; set; } = string.Empty;
+
+
+
+        public MovieDetails? MovieDetails { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
