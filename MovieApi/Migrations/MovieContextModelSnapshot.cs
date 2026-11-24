@@ -77,6 +77,35 @@ namespace MovieApi.Migrations
                     b.ToTable("MovieDetails");
                 });
 
+            modelBuilder.Entity("MovieApi.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("MovieApi.Models.MovieDetails", b =>
                 {
                     b.HasOne("MovieApi.Models.Movie", "Movie")
@@ -88,9 +117,22 @@ namespace MovieApi.Migrations
                     b.Navigation("Movie");
                 });
 
+            modelBuilder.Entity("MovieApi.Models.Review", b =>
+                {
+                    b.HasOne("MovieApi.Models.Movie", "Movie")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+                });
+
             modelBuilder.Entity("MovieApi.Models.Movie", b =>
                 {
                     b.Navigation("MovieDetails");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

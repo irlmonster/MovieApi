@@ -18,12 +18,12 @@ namespace MovieApi.Models
         public string Genre { get; set; } = string.Empty;
 
 
-
+        // Navigation property för MovieDetails
         public MovieDetails? MovieDetails { get; set; }
 
 
-
-
+        // Navigation property för Reviews
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
 
 
