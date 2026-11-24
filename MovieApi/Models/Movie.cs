@@ -21,18 +21,11 @@ namespace MovieApi.Models
         // Navigation property för MovieDetails
         public MovieDetails? MovieDetails { get; set; }
 
-
         // Navigation property för Reviews
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
-
-
-
-
-
-
-
-
+        // Navigation property för Actors
+        public ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
 
 
