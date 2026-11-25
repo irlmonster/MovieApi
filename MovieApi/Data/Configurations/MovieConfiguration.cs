@@ -30,12 +30,12 @@ namespace MovieApi.Data.Configurations
 
             // 1:n - En film kan ha flera actors och en actor kan höra till flera filmer.
             builder.HasMany(m => m.Actors)
-                .WithMany(a => a.Movies)
-                .UsingEntity<Dictionary<string, object>>(
-                "MovieActor",
-                j => j.HasOne<Actor>().WithMany().HasForeignKey("ActorId"),
-                j => j.HasOne<Movie>().WithMany().HasForeignKey("MovieId"),
-                j => j.HasKey("MovieId", "ActorId"));
+               .WithMany(a => a.Movies)
+               .UsingEntity(
+                   "MovieActor",
+                   l => l.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId"),
+                   r => r.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId"),
+                   j => j.HasKey("MovieId", "ActorId"));
 
 
 
