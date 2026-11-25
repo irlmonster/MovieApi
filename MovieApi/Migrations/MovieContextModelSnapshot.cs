@@ -21,19 +21,19 @@ namespace MovieApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ActorMovie", b =>
+            modelBuilder.Entity("MovieActor", b =>
                 {
-                    b.Property<int>("ActorsId")
+                    b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MoviesId")
+                    b.Property<int>("ActorId")
                         .HasColumnType("int");
 
-                    b.HasKey("ActorsId", "MoviesId");
+                    b.HasKey("MovieId", "ActorId");
 
-                    b.HasIndex("MoviesId");
+                    b.HasIndex("ActorId");
 
-                    b.ToTable("ActorMovie");
+                    b.ToTable("MovieActor");
                 });
 
             modelBuilder.Entity("MovieApi.Models.Actor", b =>
@@ -69,11 +69,13 @@ namespace MovieApi.Migrations
 
                     b.Property<string>("Genre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -142,17 +144,17 @@ namespace MovieApi.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("ActorMovie", b =>
+            modelBuilder.Entity("MovieActor", b =>
                 {
                     b.HasOne("MovieApi.Models.Actor", null)
                         .WithMany()
-                        .HasForeignKey("ActorsId")
+                        .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MovieApi.Models.Movie", null)
                         .WithMany()
-                        .HasForeignKey("MoviesId")
+                        .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
