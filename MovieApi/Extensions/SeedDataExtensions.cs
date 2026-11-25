@@ -10,7 +10,7 @@ namespace MovieApi.Extensions
             using var scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<MovieContext>();
 
-            // Finns det redan filmer? Då har vi redan seedat data, så vi returnerar.
+            // Finns det redan filmer? Då har vi redan seedat data och returnerar istället.
             if (context.Movies.Any()) return;
 
             // Genrer
