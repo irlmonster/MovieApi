@@ -159,6 +159,53 @@ public class MoviesController : ControllerBase
         return NoContent();
     }
 
+    // GET: api/Movies/5/details
+    [HttpGet("{id}/details")]
+    public async Task<ActionResult<MovieDetailDto>> GetMovieDetails(int id)
+    {
+        var movie = await _context.Movies
+            .Where(m => m.Id == id)
+            .Select(m => new MovieDetailDto
+            {
+                // Filmdata
+                Id = m.Id,
+                Title = m.Title,
+                Year = m.Year,
+                Duration = m.Duration,
+                Genres = m.Genres.Select(g => g.Name).ToList(),
+
+                // Från MovieDetails
+                Synopsis = m.MovieDetails != null ? m.MovieDetails.Synopsis : string.Empty,
+                Language = m.MovieDetails != null ? m.MovieDetails.Language : string.Empty,
+                Budget = m.MovieDetails != null ? m.MovieDetails.Budget : 0,
+
+                // Relationer
+                Reviews = m.Reviews.Select(r => new ReviewDto
+                {
+                    Id = r.Id,
+                    ReviewerName = r.ReviewerName,
+                    Comment = r.Comment,
+                    Rating = r.Rating
+                }).ToList(),
+
+                Actors = m.Actors.Select(a => new ActorDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    BirthYear = a.BirthYear
+                }).ToList()
+            })
+            .FirstOrDefaultAsync();
+
+        if (movie == null)
+            return NotFound();
+
+        return Ok(movie);
+    }
+
+
+
+
     private bool MovieExists(int? id)
     {
         return _context.Movies.Any(e => e.Id == id);
