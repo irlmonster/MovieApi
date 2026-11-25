@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Data;
+using MovieApi.Extensions;
 
 namespace MovieApi
 {
@@ -13,12 +14,20 @@ namespace MovieApi
             builder.Services.AddDbContext<MovieContext>(options => options.UseSqlServer(connectionString));
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
+
+            // Seed data
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+                app.SeedData();
+            }
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
