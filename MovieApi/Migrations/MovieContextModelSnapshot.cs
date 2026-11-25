@@ -33,7 +33,7 @@ namespace MovieApi.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("MovieActor", (string)null);
+                    b.ToTable("MovieActor");
                 });
 
             modelBuilder.Entity("MovieApi.Models.Actor", b =>
@@ -53,7 +53,28 @@ namespace MovieApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors", (string)null);
+                    b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("MovieApi.Models.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("MovieApi.Models.Movie", b =>
@@ -67,11 +88,6 @@ namespace MovieApi.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -82,7 +98,7 @@ namespace MovieApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("MovieApi.Models.MovieDetails", b =>
@@ -113,7 +129,7 @@ namespace MovieApi.Migrations
                     b.HasIndex("MovieId")
                         .IsUnique();
 
-                    b.ToTable("MovieDetails", (string)null);
+                    b.ToTable("MovieDetails");
                 });
 
             modelBuilder.Entity("MovieApi.Models.Review", b =>
@@ -142,7 +158,22 @@ namespace MovieApi.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("MovieGenre", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("MovieGenre");
                 });
 
             modelBuilder.Entity("MovieActor", b =>
@@ -180,6 +211,21 @@ namespace MovieApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieGenre", b =>
+                {
+                    b.HasOne("MovieApi.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieApi.Models.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MovieApi.Models.Movie", b =>

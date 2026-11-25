@@ -12,10 +12,6 @@ namespace MovieApi.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(m => m.Genre)
-                .IsRequired()
-                .HasMaxLength(50);
-
 
             // 1:1 - En film har en MovieDetails, som hör till en film. 
             // MovieDetails har ett MovieId som är en foreign key till Movie.
@@ -28,7 +24,7 @@ namespace MovieApi.Data.Configurations
                 .WithOne(r => r.Movie)
                 .HasForeignKey(r => r.MovieId);
 
-            // 1:n - En film kan ha flera actors och en actor kan höra till flera filmer.
+            // N:M - En film kan ha flera actors och en actor kan höra till flera filmer.
             builder.HasMany(m => m.Actors)
                .WithMany(a => a.Movies)
                .UsingEntity(
@@ -37,7 +33,14 @@ namespace MovieApi.Data.Configurations
                    r => r.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId"),
                    j => j.HasKey("MovieId", "ActorId"));
 
-
+            // N:M - En film kan ha flera genres och en genre kan höra till flera filmer.
+            builder.HasMany(m => m.Genres)
+                .WithMany(g => g.Movies)
+                .UsingEntity(
+                    "MovieGenre",
+                    l => l.HasOne(typeof(Genre)).WithMany().HasForeignKey("GenreId"),
+                    r => r.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId"),
+                    j => j.HasKey("MovieId", "GenreId"));
 
         }
     }

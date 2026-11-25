@@ -11,8 +11,6 @@
 
         public int Year { get; set; }
 
-        public string Genre { get; set; } = string.Empty;
-
 
         // Navigation property för MovieDetails
         public MovieDetails? MovieDetails { get; set; }
@@ -23,7 +21,8 @@
         // Navigation property för Actors
         public ICollection<Actor> Actors { get; set; } = new List<Actor>();
 
-
+        // Navigation property för Genre
+        public ICollection<Genre> Genres { get; set; } = new List<Genre>();
 
 
     }
