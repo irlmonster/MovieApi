@@ -1,0 +1,30 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MovieApi.DTOs
+{
+    public record MovieUpdateDto
+    {
+        [Required]
+        [MaxLength(100)]
+        public string Title { get; init; } = string.Empty;
+
+        [Range(1888, 2100)]
+        public int Year { get; init; }
+
+        [Range(1, 600)]
+        public int Duration { get; init; }
+
+        public List<int> GenreIds { get; init; } = new();
+
+        // MovieDetails skapas samtidigt som filmen
+        [Required]
+        public string Synopsis { get; init; } = string.Empty;
+
+        [Required]
+        [MaxLength(50)]
+        public string Language { get; init; } = string.Empty;
+
+        [Range(0, double.MaxValue)]
+        public decimal Budget { get; init; }
+    }
+}
