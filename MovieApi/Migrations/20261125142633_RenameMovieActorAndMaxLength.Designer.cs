@@ -11,8 +11,8 @@ using MovieApi.Data;
 namespace MovieApi.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20261125142105_FluentCheck")]
-    partial class FluentCheck
+    [Migration("20261125142633_RenameMovieActorAndMaxLength")]
+    partial class RenameMovieActorAndMaxLength
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

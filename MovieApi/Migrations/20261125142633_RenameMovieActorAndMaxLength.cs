@@ -5,7 +5,7 @@
 namespace MovieApi.Migrations
 {
     /// <inheritdoc />
-    public partial class FluentCheck : Migration
+    public partial class RenameMovieActorAndMaxLength : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
