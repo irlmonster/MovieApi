@@ -1,6 +1,4 @@
-﻿using MovieApi.DTO;
-
-namespace MovieApi.DTOs
+﻿namespace MovieApi.DTOs
 {
     public record MovieDetailDto
     {
@@ -18,6 +16,6 @@ namespace MovieApi.DTOs
 
         // Relationer
         public List<ReviewDto> Reviews { get; init; } = new();
-        public List<ActorDto> Actors { get; init; } = new();
+        public List<MovieActorDto> Actors { get; init; } = new();
     }
 }

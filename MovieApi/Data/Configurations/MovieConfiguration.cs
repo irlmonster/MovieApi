@@ -24,15 +24,6 @@ namespace MovieApi.Data.Configurations
                 .WithOne(r => r.Movie)
                 .HasForeignKey(r => r.MovieId);
 
-            // N:M - En film kan ha flera actors och en actor kan höra till flera filmer.
-            builder.HasMany(m => m.Actors)
-               .WithMany(a => a.Movies)
-               .UsingEntity(
-                   "MovieActor",
-                   l => l.HasOne(typeof(Actor)).WithMany().HasForeignKey("ActorId"),
-                   r => r.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId"),
-                   j => j.HasKey("MovieId", "ActorId"));
-
             // N:M - En film kan ha flera genres och en genre kan höra till flera filmer.
             builder.HasMany(m => m.Genres)
                 .WithMany(g => g.Movies)

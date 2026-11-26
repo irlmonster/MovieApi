@@ -34,7 +34,11 @@ namespace MovieApi.Extensions
                     Year = 1999,
                     Duration = 136,
                     Genres = { action, sciFi },
-                    Actors = { keanu, carrieAnne },
+                    MovieActors =
+                    {
+                        new MovieActor { Actor = keanu, Role = "Neo" },
+                        new MovieActor { Actor = carrieAnne, Role = "Trinity" }
+                    },
                     MovieDetails = new MovieDetails
                     {
                         Synopsis = "A hacker discovers reality is a simulation.",
@@ -45,7 +49,8 @@ namespace MovieApi.Extensions
                     {
                         new Review { ReviewerName = "Anna", Comment = "Mind-blowing!", Rating = 5 },
                         new Review { ReviewerName = "Erik", Comment = "Lite förvirrande men bra.", Rating = 4 }
-                    }
+                    },
+
                 },
                 new Movie
                 {
@@ -53,7 +58,11 @@ namespace MovieApi.Extensions
                     Year = 1994,
                     Duration = 142,
                     Genres = { drama, comedy },
-                    Actors = { tomHanks, robinWright },
+                    MovieActors =
+                    {
+                        new MovieActor { Actor = tomHanks, Role = "Forrest Gump" },
+                        new MovieActor { Actor = robinWright, Role = "Jenny Curran" }
+                    },
                     MovieDetails = new MovieDetails
                     {
                         Synopsis = "A kind man witnesses decades of American history.",
@@ -71,7 +80,10 @@ namespace MovieApi.Extensions
                     Year = 1998,
                     Duration = 103,
                     Genres = { drama, comedy },
-                    Actors = { jimCarrey },
+                    MovieActors =
+                    {
+                        new MovieActor { Actor = jimCarrey, Role = "Truman Burbank" }
+                    },
                     MovieDetails = new MovieDetails
                     {
                         Synopsis = "A man learns his whole life is a TV show.",

@@ -93,29 +93,32 @@ namespace MovieApi.Controllers
             return NoContent();
         }
 
-        // POST: api/movies/5/actors/3
-        [HttpPost("movies/{movieId}/actors/{actorId}")]
-        public async Task<IActionResult> AddActorToMovie(int movieId, int actorId)
-        {
-            // 1. Hämta filmen MED dess skådisar
-            var movie = await _context.Movies
-                .Include(m => m.Actors)
-                .FirstOrDefaultAsync(m => m.Id == movieId);
 
-            if (movie == null)
+        // POST: api/movies/5/actors
+        // Body: { "actorId": 4, "role": "Main antagonist" }
+        [HttpPost("movies/{movieId}/actors")]
+        public async Task<IActionResult> AddActorToMovie(int movieId, MovieActorCreateDto dto)
+        {
+            if (!await _context.Movies.AnyAsync(m => m.Id == movieId))
                 return NotFound("Filmen finns inte.");
 
-            // 2. Hämta skådisen
-            var actor = await _context.Actors.FindAsync(actorId);
-            if (actor == null)
+            if (!await _context.Actors.AnyAsync(a => a.Id == dto.ActorId))
                 return NotFound("Skådespelaren finns inte.");
 
-            // 3. Är de redan kopplade?
-            if (movie.Actors.Any(a => a.Id == actorId))
+            var alreadyLinked = await _context.MovieActors
+                .AnyAsync(ma => ma.MovieId == movieId && ma.ActorId == dto.ActorId);
+
+            if (alreadyLinked)
                 return Conflict("Skådespelaren är redan med i filmen.");
 
-            // 4. Koppla ihop
-            movie.Actors.Add(actor);
+            var movieActor = new MovieActor
+            {
+                MovieId = movieId,          // från URL:en
+                ActorId = dto.ActorId,      // från bodyn
+                Role = dto.Role             // från bodyn
+            };
+
+            _context.MovieActors.Add(movieActor);
             await _context.SaveChangesAsync();
 
             return NoContent();

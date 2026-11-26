@@ -34,7 +34,7 @@ public class MoviesController : ControllerBase
             query = query.Where(m => m.Year == year.Value);
 
         if (!string.IsNullOrWhiteSpace(actor))
-            query = query.Where(m => m.Actors.Any(a => a.Name == actor));
+            query = query.Where(m => m.MovieActors.Any(ma => ma.Actor.Name == actor));
 
         // Nu går vi till affären
         var movies = await query
@@ -207,11 +207,12 @@ public class MoviesController : ControllerBase
                     Rating = r.Rating
                 }).ToList(),
 
-                Actors = m.Actors.Select(a => new ActorDto
+                Actors = m.MovieActors.Select(ma => new MovieActorDto
                 {
-                    Id = a.Id,
-                    Name = a.Name,
-                    BirthYear = a.BirthYear
+                    ActorId = ma.Actor.Id,
+                    Name = ma.Actor.Name,
+                    BirthYear = ma.Actor.BirthYear,
+                    Role = ma.Role
                 }).ToList()
             })
             .FirstOrDefaultAsync();
