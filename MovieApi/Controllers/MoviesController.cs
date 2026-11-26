@@ -16,18 +16,37 @@ public class MoviesController : ControllerBase
     }
 
     // GET: api/Movies
+    // GET: api/Movies?genre=Drama&year=1994&actor=Tom+Hanks
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
+    public async Task<ActionResult<IEnumerable<MovieDto>>> GetMovies(
+        [FromQuery] string? genre,
+        [FromQuery] int? year,
+        [FromQuery] string? actor)
     {
-        var movies = await _context.Movies
+        // Börja med en inköpslista: "alla filmer"
+        var query = _context.Movies.AsQueryable();
+
+        // Lägg till villkor bara om användaren skickat med dem
+        if (!string.IsNullOrWhiteSpace(genre))
+            query = query.Where(m => m.Genres.Any(g => g.Name == genre));
+
+        if (year.HasValue)
+            query = query.Where(m => m.Year == year.Value);
+
+        if (!string.IsNullOrWhiteSpace(actor))
+            query = query.Where(m => m.Actors.Any(a => a.Name == actor));
+
+        // Nu går vi till affären
+        var movies = await query
             .Select(m => new MovieDto
             {
                 Id = m.Id,
                 Title = m.Title,
                 Year = m.Year,
+                Duration = m.Duration,
                 Genres = m.Genres.Select(g => g.Name).ToList()
             })
-        .ToListAsync();
+            .ToListAsync();
 
         return Ok(movies);
     }
