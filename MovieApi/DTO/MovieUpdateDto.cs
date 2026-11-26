@@ -19,6 +19,9 @@ namespace MovieApi.DTOs
         [Range(1, int.MaxValue)]
         public int DirectorId { get; init; }
 
+        [Range(1, int.MaxValue)]
+        public int CountryId { get; init; }
+
         // MovieDetails skapas samtidigt som filmen
         [Required]
         public string Synopsis { get; init; } = string.Empty;

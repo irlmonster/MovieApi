@@ -39,6 +39,12 @@ namespace MovieApi.Data.Configurations
                 .HasForeignKey(m => m.DirectorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // M:1 - En film har ett land, ett land kan ha många filmer.
+            builder.HasOne(m => m.Country)
+                .WithMany(c => c.Movies)
+                .HasForeignKey(m => m.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

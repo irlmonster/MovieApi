@@ -1,0 +1,11 @@
+﻿namespace MovieApi.Models
+{
+    public class Country
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+
+        // Navigation property för Movies
+        public ICollection<Movie> Movies { get; set; } = new List<Movie>();
+    }
+}

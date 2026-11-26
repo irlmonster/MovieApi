@@ -27,5 +27,9 @@
         // Navigation property för Director
         public int DirectorId { get; set; }
         public Director Director { get; set; } = null!;
+
+        // Navigation property för Country
+        public int CountryId { get; set; }
+        public Country Country { get; set; } = null!;
     }
 }

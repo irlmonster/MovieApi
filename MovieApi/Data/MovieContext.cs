@@ -13,6 +13,7 @@ namespace MovieApi.Data
         public DbSet<Genre> Genres { get; set; } = default!;
         public DbSet<MovieActor> MovieActors { get; set; } = default!;
         public DbSet<Director> Directors { get; set; } = default!;
+        public DbSet<Country> Countries { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

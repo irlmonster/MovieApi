@@ -9,6 +9,7 @@
         public int Duration { get; init; }
         public string Director { get; init; } = string.Empty;
         public List<string> Genres { get; init; } = new();
+        public string Country { get; init; } = string.Empty;
 
         // Från MovieDetails
         public string Synopsis { get; init; } = string.Empty;

@@ -94,11 +94,15 @@ public class MoviesController : ControllerBase
         var genres = await _context.Genres
             .Where(g => dto.GenreIds.Contains(g.Id))
             .ToListAsync();
-
+        // Kontrollera att alla genrer finns innan sparning
         if (genres.Count != dto.GenreIds.Distinct().Count())
             return BadRequest("En eller flera genrer finns inte.");
 
-        
+        // Kontrollera att landet finns innan sparning
+        var country = await _context.Countries.FindAsync(dto.CountryId);
+        if (country == null)
+            return BadRequest("Landet finns inte.");
+
         // Kontrollera att regissören finns innan sparning
         if (!await _context.Directors.AnyAsync(d => d.Id == dto.DirectorId))
             return BadRequest("Regissören finns inte.");
@@ -108,6 +112,7 @@ public class MoviesController : ControllerBase
         movie.Year = dto.Year;
         movie.Duration = dto.Duration;
         movie.DirectorId = dto.DirectorId;
+        movie.CountryId = dto.CountryId;
 
         movie.Genres.Clear();
         foreach (var genre in genres)
@@ -145,6 +150,11 @@ public class MoviesController : ControllerBase
         if (director == null)
             return BadRequest("Regissören finns inte.");
 
+        // Kontrollera att landet finns innan sparning
+        var country = await _context.Countries.FindAsync(dto.CountryId);
+        if (country == null)
+            return BadRequest("Landet finns inte.");
+
         // 3. Packa upp kartongen till en riktig film
         var movie = new Movie
         {
@@ -153,6 +163,7 @@ public class MoviesController : ControllerBase
             Duration = dto.Duration,
             Genres = genres,
             DirectorId = dto.DirectorId,
+            CountryId = dto.CountryId,
             MovieDetails = new MovieDetails
             {
                 Synopsis = dto.Synopsis,
@@ -174,7 +185,8 @@ public class MoviesController : ControllerBase
             Year = movie.Year,
             Duration = movie.Duration,
             Director = director.Name,
-            Genres = genres.Select(g => g.Name).ToList()
+            Genres = genres.Select(g => g.Name).ToList(),
+            Country = movie.Country.Name
         };
 
         return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, result);
@@ -210,6 +222,7 @@ public class MoviesController : ControllerBase
                 Duration = m.Duration,
                 Genres = m.Genres.Select(g => g.Name).ToList(),
                 Director = m.Director.Name,
+                Country = m.Country.Name,
 
                 // Från MovieDetails
                 Synopsis = m.MovieDetails != null ? m.MovieDetails.Synopsis : string.Empty,
