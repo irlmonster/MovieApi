@@ -18,8 +18,8 @@
         // Navigation property för Reviews
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
-        // Navigation property för Actors
-        public ICollection<Actor> Actors { get; set; } = new List<Actor>();
+        // Navigation property för MovieActors
+        public ICollection<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
 
         // Navigation property för Genre
         public ICollection<Genre> Genres { get; set; } = new List<Genre>();

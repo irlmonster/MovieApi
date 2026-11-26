@@ -11,6 +11,7 @@ namespace MovieApi.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Actor> Actors { get; set; } = default!;
         public DbSet<Genre> Genres { get; set; } = default!;
+        public DbSet<MovieActor> MovieActors { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
