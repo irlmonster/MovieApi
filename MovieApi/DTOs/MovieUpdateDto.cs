@@ -11,7 +11,7 @@ namespace MovieApi.DTOs
         [Range(1888, 2100)]
         public int Year { get; init; }
 
-        [Range(1, 600)]
+        [Range(1, 800)]
         public int Duration { get; init; }
 
         public List<int> GenreIds { get; init; } = new();

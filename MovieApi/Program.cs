@@ -22,17 +22,11 @@ namespace MovieApi
             var app = builder.Build();
 
             // Seed data
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-                app.SeedData();
-            }
-
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.SeedData();
             }
 
             app.UseHttpsRedirection();

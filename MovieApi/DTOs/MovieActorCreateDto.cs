@@ -4,7 +4,7 @@ namespace MovieApi.DTOs
 {
     public record MovieActorCreateDto
     {
-        [Required]
+        [Range(1, int.MaxValue)]
         public int ActorId { get; init; }
 
         [Required]

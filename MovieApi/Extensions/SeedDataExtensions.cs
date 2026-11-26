@@ -62,6 +62,64 @@ namespace MovieApi.Extensions
                 // ===== USA =====
                 new Movie
                 {
+                    Title = "The Matrix",
+                    Year = 1999,
+                    Duration = 136,
+                    Genres = { action, sciFi },
+                    Director = wachowski,
+                    Country = usa,
+                    MovieActors =
+                    {
+                        new MovieActor { Actor = keanu, Role = "Neo" },
+                        new MovieActor { Actor = carrieAnne, Role = "Trinity" }
+                    },
+                    MovieDetails = new MovieDetails { Synopsis = "A hacker discovers reality is a simulation.", Language = "English", Budget = 63000000m },
+                    Reviews =
+                    {
+                        new Review { ReviewerName = "Anna", Comment = "Mind-blowing!", Rating = 5 },
+                        new Review { ReviewerName = "Erik", Comment = "Lite förvirrande men bra.", Rating = 4 }
+                    }
+                },
+                new Movie
+                {
+                    Title = "Forrest Gump",
+                    Year = 1994,
+                    Duration = 142,
+                    Genres = { drama, comedy },
+                    Director = zemeckis,
+                    Country = usa,
+                    MovieActors =
+                    {
+                        new MovieActor { Actor = tomHanks, Role = "Forrest Gump" },
+                        new MovieActor { Actor = robinWright, Role = "Jenny Curran" }
+                    },
+                    MovieDetails = new MovieDetails { Synopsis = "A kind man witnesses decades of American history.", Language = "English", Budget = 55000000m },
+                    Reviews =
+                    {
+                        new Review { ReviewerName = "Lisa", Comment = "Grät hela filmen.", Rating = 5 }
+                    }
+                },
+                new Movie
+                {
+                    Title = "The Truman Show",
+                    Year = 1998,
+                    Duration = 103,
+                    Genres = { drama, comedy },
+                    Director = weir,
+                    Country = usa,
+                    MovieActors =
+                    {
+                        new MovieActor { Actor = jimCarrey, Role = "Truman Burbank" }
+                    },
+                    MovieDetails = new MovieDetails { Synopsis = "A man learns his whole life is a TV show.", Language = "English", Budget = 60000000m },
+                    Reviews =
+                    {
+                        new Review { ReviewerName = "Johan", Comment = "Smart och rolig.", Rating = 4 },
+                        new Review { ReviewerName = "Sara", Comment = "Okej.", Rating = 3 }
+                    }
+                },
+                new Movie
+                {
                     Title = "Cast Away",
                     Year = 2000,
                     Duration = 143,

@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Data;
-using MovieApi.DTO;
 using MovieApi.DTOs;
 using MovieApi.Models;
+
+namespace MovieApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class MoviesController : ControllerBase
 {
     private readonly MovieContext _context;
+
     public MoviesController(MovieContext context)
     {
         _context = context;
@@ -45,7 +47,8 @@ public class MoviesController : ControllerBase
                 Year = m.Year,
                 Duration = m.Duration,
                 Director = m.Director.Name,
-                Genres = m.Genres.Select(g => g.Name).ToList(),
+                Country = m.Country.Name,
+                Genres = m.Genres.Select(g => g.Name).ToList()
             })
             .ToListAsync();
 
@@ -65,14 +68,13 @@ public class MoviesController : ControllerBase
                 Year = m.Year,
                 Duration = m.Duration,
                 Director = m.Director.Name,
+                Country = m.Country.Name,
                 Genres = m.Genres.Select(g => g.Name).ToList()
             })
             .FirstOrDefaultAsync();
 
         if (movie == null)
-        {
             return NotFound();
-        }
 
         return Ok(movie);
     }
@@ -90,20 +92,17 @@ public class MoviesController : ControllerBase
         if (movie == null)
             return NotFound();
 
-        // 2. Kontroll först så att det vi ska använda finns, precis som i POST
+        // 2. Kontrollera först att allt vi ska använda finns
         var genres = await _context.Genres
             .Where(g => dto.GenreIds.Contains(g.Id))
             .ToListAsync();
-        // Kontrollera att alla genrer finns innan sparning
+
         if (genres.Count != dto.GenreIds.Distinct().Count())
             return BadRequest("En eller flera genrer finns inte.");
 
-        // Kontrollera att landet finns innan sparning
-        var country = await _context.Countries.FindAsync(dto.CountryId);
-        if (country == null)
+        if (!await _context.Countries.AnyAsync(c => c.Id == dto.CountryId))
             return BadRequest("Landet finns inte.");
 
-        // Kontrollera att regissören finns innan sparning
         if (!await _context.Directors.AnyAsync(d => d.Id == dto.DirectorId))
             return BadRequest("Regissören finns inte.");
 
@@ -125,7 +124,6 @@ public class MoviesController : ControllerBase
         movie.MovieDetails.Language = dto.Language;
         movie.MovieDetails.Budget = dto.Budget;
 
-
         // 4. Spara
         await _context.SaveChangesAsync();
 
@@ -141,16 +139,14 @@ public class MoviesController : ControllerBase
             .Where(g => dto.GenreIds.Contains(g.Id))
             .ToListAsync();
 
-        // 2. Fanns alla? Annars har användaren skickat ett Id som inte finns
+        // 2. Kontrollera att allt finns
         if (genres.Count != dto.GenreIds.Distinct().Count())
             return BadRequest("En eller flera genrer finns inte.");
 
-        // Kontrollera att regissören finns innan sparning
         var director = await _context.Directors.FindAsync(dto.DirectorId);
         if (director == null)
             return BadRequest("Regissören finns inte.");
 
-        // Kontrollera att landet finns innan sparning
         var country = await _context.Countries.FindAsync(dto.CountryId);
         if (country == null)
             return BadRequest("Landet finns inte.");
@@ -172,7 +168,6 @@ public class MoviesController : ControllerBase
             }
         };
 
-
         // 4. Spara
         _context.Movies.Add(movie);
         await _context.SaveChangesAsync();
@@ -185,8 +180,8 @@ public class MoviesController : ControllerBase
             Year = movie.Year,
             Duration = movie.Duration,
             Director = director.Name,
-            Genres = genres.Select(g => g.Name).ToList(),
-            Country = movie.Country.Name
+            Country = country.Name,
+            Genres = genres.Select(g => g.Name).ToList()
         };
 
         return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, result);
@@ -253,5 +248,4 @@ public class MoviesController : ControllerBase
 
         return Ok(movie);
     }
-
 }
