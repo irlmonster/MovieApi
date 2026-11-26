@@ -16,6 +16,9 @@ namespace MovieApi.DTO
 
         public List<int> GenreIds { get; init; } = new();
 
+        [Range(1, int.MaxValue)]
+        public int DirectorId { get; init; }
+
         // MovieDetails skapas samtidigt som filmen
         [Required]
         public string Synopsis { get; init; } = string.Empty;

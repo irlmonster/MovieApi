@@ -24,6 +24,8 @@
         // Navigation property för Genre
         public ICollection<Genre> Genres { get; set; } = new List<Genre>();
 
-
+        // Navigation property för Director
+        public int DirectorId { get; set; }
+        public Director Director { get; set; } = null!;
     }
 }

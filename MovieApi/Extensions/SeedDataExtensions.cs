@@ -19,6 +19,11 @@ namespace MovieApi.Extensions
             var drama = new Genre { Name = "Drama" };
             var comedy = new Genre { Name = "Comedy" };
 
+            // Regissörer
+            var wachowski = new Director { Name = "Lana Wachowski" };
+            var zemeckis = new Director { Name = "Robert Zemeckis" };
+            var weir = new Director { Name = "Peter Weir" };
+
             // Skådisar
             var keanu = new Actor { Name = "Keanu Reeves", BirthYear = 1964 };
             var carrieAnne = new Actor { Name = "Carrie-Anne Moss", BirthYear = 1967 };
@@ -34,6 +39,7 @@ namespace MovieApi.Extensions
                     Year = 1999,
                     Duration = 136,
                     Genres = { action, sciFi },
+                    Director = wachowski,
                     MovieActors =
                     {
                         new MovieActor { Actor = keanu, Role = "Neo" },
@@ -58,6 +64,7 @@ namespace MovieApi.Extensions
                     Year = 1994,
                     Duration = 142,
                     Genres = { drama, comedy },
+                    Director = zemeckis,
                     MovieActors =
                     {
                         new MovieActor { Actor = tomHanks, Role = "Forrest Gump" },
@@ -80,6 +87,7 @@ namespace MovieApi.Extensions
                     Year = 1998,
                     Duration = 103,
                     Genres = { drama, comedy },
+                    Director = weir,
                     MovieActors =
                     {
                         new MovieActor { Actor = jimCarrey, Role = "Truman Burbank" }

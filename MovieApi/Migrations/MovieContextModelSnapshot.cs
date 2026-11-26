@@ -41,6 +41,27 @@ namespace MovieApi.Migrations
                     b.ToTable("Actors");
                 });
 
+            modelBuilder.Entity("MovieApi.Models.Director", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Directors");
+                });
+
             modelBuilder.Entity("MovieApi.Models.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -70,6 +91,9 @@ namespace MovieApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("DirectorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
@@ -82,6 +106,8 @@ namespace MovieApi.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DirectorId");
 
                     b.ToTable("Movies");
                 });
@@ -181,6 +207,17 @@ namespace MovieApi.Migrations
                     b.ToTable("MovieGenre");
                 });
 
+            modelBuilder.Entity("MovieApi.Models.Movie", b =>
+                {
+                    b.HasOne("MovieApi.Models.Director", "Director")
+                        .WithMany("Movies")
+                        .HasForeignKey("DirectorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Director");
+                });
+
             modelBuilder.Entity("MovieApi.Models.MovieActor", b =>
                 {
                     b.HasOne("MovieApi.Models.Actor", "Actor")
@@ -240,6 +277,11 @@ namespace MovieApi.Migrations
             modelBuilder.Entity("MovieApi.Models.Actor", b =>
                 {
                     b.Navigation("MovieActors");
+                });
+
+            modelBuilder.Entity("MovieApi.Models.Director", b =>
+                {
+                    b.Navigation("Movies");
                 });
 
             modelBuilder.Entity("MovieApi.Models.Movie", b =>

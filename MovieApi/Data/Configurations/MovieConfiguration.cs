@@ -33,6 +33,12 @@ namespace MovieApi.Data.Configurations
                     r => r.HasOne(typeof(Movie)).WithMany().HasForeignKey("MovieId"),
                     j => j.HasKey("MovieId", "GenreId"));
 
+            // M:1 - En film har en regissör, en regissör kan ha många filmer.
+            builder.HasOne(m => m.Director)
+                .WithMany(d => d.Movies)
+                .HasForeignKey(m => m.DirectorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
