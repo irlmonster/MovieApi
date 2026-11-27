@@ -35,7 +35,7 @@ namespace MovieApi.Controllers
 
         // GET: /api/reports/movies/with-most-reviews
         [HttpGet("movies/with-most-reviews")]
-        public async Task<ActionResult<IEnumerable<MovieReviewCountDto>>> GetMoviesWithMostReviews()
+        public async Task<ActionResult<MovieReviewCountDto>> GetMoviesWithMostReviews()
         {
             var result = await _context.Movies
                 .Select(m => new MovieReviewCountDto
@@ -45,7 +45,7 @@ namespace MovieApi.Controllers
                     ReviewCount = m.Reviews.Count()
                 })
                 .OrderByDescending(m => m.ReviewCount)
-                .ToListAsync();
+                .FirstOrDefaultAsync();
 
             if (result == null)
             {
@@ -79,6 +79,76 @@ namespace MovieApi.Controllers
 
 
         // GET: /api/reports/actors/most-active
+        [HttpGet("actors/most-active")]
+        public async Task<ActionResult<IEnumerable<ActorMovieCountDto>>> GetMostActiveActors()
+        {
+            var result = await _context.Actors
+                .Select(a => new ActorMovieCountDto
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    MovieCount = a.MovieActors.Count()
+                })
+                .OrderByDescending(a => a.MovieCount)
+                .Take(5)
+                .ToListAsync();
+            return Ok(result);
+        }
 
+
+        // GET: /api/reports/movies/average-ratings
+        [HttpGet("movies/average-ratings")]
+        public async Task<ActionResult<IEnumerable<GenreAverageRatingsDto>>> GetAverageRatingGenre()
+        {
+            var result = await _context.Genres
+                .Select(g => new GenreAverageRatingsDto
+                {
+                    Genre = g.Name,
+
+                    ReviewCount = g.Movies
+                    .SelectMany(m => m.Reviews)
+                        .Count(),
+
+                    AverageRating = g.Movies
+                    .SelectMany(m => m.Reviews)
+                        .Average(r => (double?)r.Rating) ?? 0
+                })
+                .OrderByDescending(r => r.AverageRating)
+                .ToListAsync();
+            return Ok(result);
+        }
+
+
+
+        // För varje genre:
+        //   ta genrens filmer
+        //   räkna ut varje films snittbetyg
+        //   sortera filmerna på snittbetyg, högst först
+        //   ta de 5 första
+        // Packa: genrens namn + listan med top 5
+
+        // GET: /api/reports/movies/top5pergenre
+        [HttpGet("movies/top5pergenre")]
+        public async Task<ActionResult<IEnumerable<GenreTopMoviesDto>>> GetTop5PerGenre()
+        {
+            var result = await _context.Genres
+                .Select(g => new GenreTopMoviesDto
+                {
+                    Genre = g.Name,
+                    TopMovies = g.Movies
+                        .Select(m => new MovieRatingDto
+                        {
+                            Id = m.Id,
+                            Title = m.Title,
+                            AverageRating = m.Reviews.Average(r => (double?)r.Rating) ?? 0
+                        })
+                        .OrderByDescending(x => x.AverageRating)
+                        .Take(5)
+                        .ToList()
+                })
+                .ToListAsync();
+
+            return Ok(result);
+        }
     }
 }
