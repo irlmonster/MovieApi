@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieApi.DTOs
+namespace MovieApi.DTOs.Actors
 {
-    public record ActorCreateDto
+    public record ActorUpdateDto
     {
         [Required]
         [MaxLength(100)]

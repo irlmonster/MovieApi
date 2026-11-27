@@ -1,4 +1,4 @@
-﻿namespace MovieApi.DTOs
+﻿namespace MovieApi.DTOs.Actors
 {
     public record ActorDto
     {

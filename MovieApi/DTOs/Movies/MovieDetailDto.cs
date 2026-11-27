@@ -1,4 +1,6 @@
-﻿namespace MovieApi.DTOs
+﻿using MovieApi.DTOs.Reviews;
+
+namespace MovieApi.DTOs.Movies
 {
     public record MovieDetailDto
     {
